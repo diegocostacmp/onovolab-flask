@@ -5,24 +5,17 @@ from requests import get, post
 import json
 from datetime import date, datetime
 from sqlalchemy import desc, func
+from unidecode import unidecode
 
 
-bp_citys = Blueprint('citys', __name__)
+bp_citys = Blueprint('citys', __name__)    
 
-@bp_citys.route('/', methods=['GET'])
-def show():
-    # i need consult webservice and 
-    # keep json data in database
-    pass
-    
-    
-
-@bp_citys.route('/city/<id_da_city>/', methods=['GET'])
-def register(id_da_city):
+@bp_citys.route('/cidade/<id_da_cidade>/', methods=['GET'])
+def register(id_da_cidade):
     # i need consult webservice and 
     # keep json data in database
     token_id = '15?token=b22460a8b91ac5f1d48f5b7029891b53'
-    url_endpoint = 'http://apiadvisor.climatempo.com.br/api/v1/forecast/locale/' + str(id_da_city) + '/days/' + token_id
+    url_endpoint = 'http://apiadvisor.climatempo.com.br/api/v1/forecast/locale/' + str(id_da_cidade) + '/days/' + token_id
     r = get(url_endpoint)
     data_json = r.json()
 
@@ -57,8 +50,8 @@ def register(id_da_city):
     return schema.jsonify(data_json), 201
 
 
-@bp_citys.route('/analyze/<start>/<end>/', methods=['GET'])
-def analyze(start, end):
+@bp_citys.route('/analise/<start>/<end>/', methods=['GET'])
+def analise(start, end):
     start = str(start).split('-')
     start_day = int(start[0])
     start_month = int(start[1])
@@ -86,9 +79,8 @@ def analyze(start, end):
     final_list = []
     temperature = max_temperature(data)
     precipitation = avg_precipitation(data)
-    final_list = temperature.append(precipitation)
 
-    return jsonify(final_list)
+    return jsonify(temperature + precipitation)
 
 def max_temperature(data):
     try:
@@ -113,7 +105,7 @@ def max_temperature(data):
         for j in data:
             if int(j.max_) == max_temp:
                 list_max.append({
-                    str(j.name): int(j.max_)
+                    unidecode(str(j.name)): int(j.max_)
                 })
 
         # Removing the repeated, since more than one
@@ -151,11 +143,11 @@ def avg_precipitation(data):
                 count2 = count2 + 1
                 if data.count() == count2:
                     list_precipitation.append({
-                    city: (sum_total / count)
+                    "cidade com maior precipitacao": str(city) + ' - ' + str((sum_total / count))
                 })
             else:
                 list_precipitation.append({
-                    city: (sum_total / count)
+                    "cidade com maior precipitacao": str(city) + ' - ' + str((sum_total / count))
                 })
 
                 # clearing info by old city

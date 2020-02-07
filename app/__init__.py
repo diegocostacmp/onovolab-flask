@@ -5,6 +5,7 @@ from .serializer import configure as config_ma
 
 
 def create_app():
+    """Construct the core application."""
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///Users/diegocosta/Desktop/onovolab-flask/example.db'
