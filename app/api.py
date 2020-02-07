@@ -76,7 +76,6 @@ def analise(start, end):
     data2 = data.order_by(desc(City.name))
     
     # methods
-    final_list = []
     temperature = max_temperature(data)
     precipitation = avg_precipitation(data)
 
