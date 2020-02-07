@@ -63,7 +63,7 @@ git clone https://github.com/diegocostacmp/onovolab-flask
 * Certifique-se de que o Python e o Ambiente Virtual (venv) estejam instalados.
 Crie o ambiente virtual e instale os pacotes.
  ```
- cd e-quest
+ cd onovolab-flask
  virtualenv venv
  source venv/bin/activate (Windows: venv\Scripts\activate)
  pip install -r requirements.txt
